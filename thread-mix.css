@@ -1,0 +1,37 @@
+.thread-mix-help {
+  margin-top: -0.2rem;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.42;
+}
+
+#accentThreadTypes {
+  min-height: 9.8rem;
+  line-height: 1.35;
+}
+
+#accentThreadTypes option {
+  padding: 0.28rem 0.35rem;
+}
+
+.texture-plan-card {
+  border: 1px solid rgba(124, 52, 65, 0.22);
+  background: rgba(184, 100, 114, 0.07);
+}
+
+.texture-plan-list {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.texture-plan-list span {
+  display: block;
+}
+
+.pdf-status-note {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
