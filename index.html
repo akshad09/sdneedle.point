@@ -1,2 +1,251 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>sdneedle.point</title></head><body><h1>sdneedle.point</h1></body></html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="sdneedle.point converts images into needlepoint charts, printable canvas guides, SVG cutter files, and 3D stencil models." />
+    <meta name="theme-color" content="#f4eadc" />
+    <title>sdneedle.point — image to needlepoint pattern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to pattern workspace</a>
+
+    <header class="hero" aria-labelledby="hero-title">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="./" aria-label="sdneedle.point home">
+          <span class="brand-mark" aria-hidden="true">✸</span>
+          <span>sdneedle.point</span>
+        </a>
+        <div class="nav-actions">
+          <button class="ghost-button" id="loadSavedButton" type="button">Load saved</button>
+          <button class="ghost-button" id="resetButton" type="button">New pattern</button>
+          <a class="solid-button" href="#export-panel">Export</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Made for Shanchi · open-source needlepoint tooling</p>
+          <h1 id="hero-title">Turn a favorite image into a stitchable needlepoint pattern.</h1>
+          <p class="hero-subtitle">
+            Upload artwork or a photo, pick mesh count, finished size, and thread type, then preview, print, cut, or prototype a grid stencil — all in your browser.
+          </p>
+          <div class="hero-actions">
+            <label class="solid-button file-trigger" for="imageInput">Upload image</label>
+            <a class="ghost-button" href="#workspace">Open workspace</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Feature summary">
+          <div class="mini-canvas" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <dl class="hero-stats">
+            <div><dt>Mesh</dt><dd>10 · 12 · 14 · 18</dd></div>
+            <div><dt>Threads</dt><dd>DMC Floss · Waverly Wool</dd></div>
+            <div><dt>Exports</dt><dd>PDF print · PNG · SVG · STL</dd></div>
+          </dl>
+        </div>
+      </section>
+    </header>
+
+    <main id="workspace" class="workspace" tabindex="-1">
+      <aside class="panel control-panel" aria-label="Pattern setup">
+        <div class="panel-heading">
+          <p class="eyebrow">Step 1</p>
+          <h2>Set up the canvas</h2>
+        </div>
+
+        <section class="dropzone" id="dropzone" aria-label="Image upload dropzone">
+          <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" />
+          <div class="dropzone-content">
+            <span class="drop-icon" aria-hidden="true">⬚</span>
+            <strong>Drop an image here</strong>
+            <span>PNG, JPG, or WebP. Processing stays local.</span>
+          </div>
+          <img id="sourcePreview" alt="Uploaded source preview" hidden />
+        </section>
+
+        <form class="settings-grid" id="settingsForm">
+          <label>
+            <span>Finished size</span>
+            <select id="sizePreset">
+              <option value="5x7">5 × 7 in</option>
+              <option value="8x10" selected>8 × 10 in</option>
+              <option value="9x12">9 × 12 in</option>
+              <option value="11x14">11 × 14 in</option>
+              <option value="custom">Custom</option>
+            </select>
+          </label>
+
+          <div class="two-col" id="customSizeFields" hidden>
+            <label>
+              <span>Width</span>
+              <input id="customWidth" type="number" min="1" max="24" step="0.25" value="8" />
+            </label>
+            <label>
+              <span>Height</span>
+              <input id="customHeight" type="number" min="1" max="24" step="0.25" value="10" />
+            </label>
+          </div>
+
+          <label>
+            <span>Mesh count</span>
+            <select id="meshCount">
+              <option value="10">10 count</option>
+              <option value="12">12 count</option>
+              <option value="14" selected>14 count</option>
+              <option value="18">18 count</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Thread type</span>
+            <select id="threadType">
+              <option value="dmc" selected>DMC Floss</option>
+              <option value="waverly">Waverly Wool</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Image fit</span>
+            <select id="fitMode">
+              <option value="crop" selected>Crop to fill</option>
+              <option value="contain">Fit with border</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Detail level</span>
+            <select id="detailLevel">
+              <option value="simple">Simple — 12 colors</option>
+              <option value="balanced" selected>Balanced — 24 colors</option>
+              <option value="detailed">Detailed — 36 colors</option>
+              <option value="max">Maximum — 48 colors</option>
+            </select>
+          </label>
+
+          <details class="advanced-card">
+            <summary>Advanced controls</summary>
+            <label>
+              <span>Maximum colors</span>
+              <input id="maxColors" type="range" min="4" max="64" step="1" value="24" />
+              <output id="maxColorsOut">24</output>
+            </label>
+            <label>
+              <span>Rare color cleanup</span>
+              <input id="cleanupThreshold" type="range" min="0" max="30" step="1" value="6" />
+              <output id="cleanupOut">6 stitches</output>
+            </label>
+            <label class="inline-toggle">
+              <input id="ditherToggle" type="checkbox" />
+              <span>Add subtle dithering</span>
+            </label>
+            <label>
+              <span>Custom palette CSV</span>
+              <input id="paletteUpload" type="file" accept=".csv,text/csv" />
+            </label>
+            <p class="help-text">CSV columns: number, name, hex. Imported colors temporarily replace the selected thread library.</p>
+          </details>
+        </form>
+
+        <section class="status-card" aria-live="polite">
+          <h3>Pattern summary</h3>
+          <dl id="patternStats" class="stats-list">
+            <div><dt>Size</dt><dd>8 × 10 in</dd></div>
+            <div><dt>Grid</dt><dd>112 × 140 stitches</dd></div>
+            <div><dt>Total</dt><dd>15,680 stitches</dd></div>
+            <div><dt>Colors</dt><dd>Waiting for image</dd></div>
+          </dl>
+        </section>
+      </aside>
+
+      <section class="preview-column" aria-label="Pattern preview and controls">
+        <div class="panel preview-toolbar">
+          <div>
+            <p class="eyebrow">Step 2</p>
+            <h2>Preview the chart</h2>
+          </div>
+          <div class="toolbar-actions" role="group" aria-label="Preview display settings">
+            <label>
+              <span class="sr-only">Preview mode</span>
+              <select id="previewMode">
+                <option value="color-symbol" selected>Color + symbols</option>
+                <option value="color">Color only</option>
+                <option value="symbol">Symbols only</option>
+                <option value="canvas-print">Canvas print view</option>
+              </select>
+            </label>
+            <label class="zoom-control">
+              <span>Zoom</span>
+              <input id="zoomRange" type="range" min="4" max="22" step="1" value="9" />
+            </label>
+          </div>
+        </div>
+
+        <div class="panel preview-panel">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon" aria-hidden="true">◇</div>
+            <h2>Upload an image to generate a needlepoint grid.</h2>
+            <p>The preview will show stitch cells, symbols, thread matches, and export warnings.</p>
+          </div>
+          <div class="canvas-scroll" id="canvasScroll" hidden>
+            <canvas id="patternCanvas" aria-label="Generated needlepoint pattern preview"></canvas>
+          </div>
+        </div>
+
+        <section class="panel warnings-panel" aria-live="polite">
+          <h3>Stitchability notes</h3>
+          <ul id="warningsList">
+            <li>Choose an image to calculate stitchability.</li>
+          </ul>
+        </section>
+      </section>
+
+      <aside class="panel legend-panel" aria-label="Thread swatches and export">
+        <div class="panel-heading">
+          <p class="eyebrow">Step 3</p>
+          <h2>Threads & export</h2>
+        </div>
+
+        <section>
+          <div class="section-title-row">
+            <h3>Color swatches</h3>
+            <button class="small-button" id="copyLegendButton" type="button">Copy legend</button>
+          </div>
+          <div id="swatchList" class="swatch-list" aria-live="polite">
+            <p class="muted">Thread matches will appear here after upload.</p>
+          </div>
+        </section>
+
+        <section id="export-panel" class="export-panel">
+          <h3>Export targets</h3>
+          <div class="export-buttons">
+            <button id="printPatternButton" type="button">Print / save chart PDF</button>
+            <button id="printCanvasButton" type="button">Print direct canvas guide</button>
+            <button id="downloadChartPngButton" type="button">Download chart PNG</button>
+            <button id="downloadCanvasPngButton" type="button">Download canvas print PNG</button>
+            <button id="downloadSvgButton" type="button">Download layered SVG</button>
+            <button id="downloadStlButton" type="button">Download 3D grid STL</button>
+            <button id="saveProjectButton" type="button">Save project locally</button>
+          </div>
+          <p class="help-text">For direct canvas printing, print at 100% scale and test on paper before printing on canvas.</p>
+        </section>
+      </aside>
+    </main>
+
+    <section class="print-area" id="printArea" aria-hidden="true"></section>
+
+    <footer class="site-footer">
+      <p>sdneedle.point is local-first and open-source. Images are processed in the browser and are not uploaded to a server.</p>
+    </footer>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
