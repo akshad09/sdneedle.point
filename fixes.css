@@ -1,0 +1,105 @@
+[hidden] {
+  display: none !important;
+}
+
+.workspace,
+.panel,
+.settings-grid,
+.settings-grid > *,
+.two-col,
+.two-col > *,
+.control-panel,
+.legend-panel,
+.preview-column {
+  min-width: 0;
+}
+
+select,
+input,
+button {
+  max-width: 100%;
+}
+
+.control-panel,
+.legend-panel {
+  overflow: hidden;
+}
+
+.settings-grid label,
+.advanced-card label {
+  min-width: 0;
+}
+
+.settings-grid select,
+.settings-grid input[type="number"],
+.advanced-card input[type="file"] {
+  width: 100%;
+  min-width: 0;
+}
+
+.workspace {
+  max-width: 1840px;
+  grid-template-columns: minmax(280px, 340px) minmax(760px, 1fr) minmax(280px, 360px);
+  gap: 1.15rem;
+}
+
+.preview-panel {
+  min-height: clamp(720px, 74vh, 940px);
+}
+
+.canvas-scroll {
+  min-height: clamp(720px, 74vh, 940px);
+  max-height: 86vh;
+}
+
+.preview-toolbar {
+  align-items: center;
+}
+
+.preview-toolbar select {
+  min-width: 190px;
+}
+
+.zoom-control {
+  min-width: 230px;
+}
+
+.dropzone {
+  min-height: 230px;
+}
+
+.export-buttons button {
+  text-align: center;
+}
+
+.export-buttons button:not(:disabled) {
+  color: var(--ink);
+}
+
+.export-buttons button:first-child:not(:disabled),
+.export-buttons button:nth-child(2):not(:disabled) {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+@media (max-width: 1320px) {
+  .workspace {
+    grid-template-columns: minmax(280px, 340px) minmax(560px, 1fr);
+  }
+
+  .legend-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-panel,
+  .canvas-scroll {
+    min-height: 520px;
+  }
+}
