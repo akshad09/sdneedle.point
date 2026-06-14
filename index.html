@@ -6,6 +6,7 @@
   <meta name="description" content="sdneedle.point converts images into needlepoint charts, canvas print guides, SVG cutter files, and 3D grid stencils." />
   <title>sdneedle.point — needlepoint pattern studio</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./fixes.css" />
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to pattern workspace</a>
@@ -17,7 +18,7 @@
     </nav>
     <section class="hero-grid">
       <div class="hero-copy"><p class="eyebrow">Open-source needlepoint tooling</p><h1 id="hero-title">Turn a favorite image into a stitchable needlepoint pattern.</h1><p class="hero-subtitle">Upload artwork or a photo, pick mesh count, finished size, and thread type, then preview, print, cut, or prototype a grid stencil — all in your browser.</p><div class="hero-actions"><label class="solid-button file-trigger" for="imageInput">Upload image</label><a class="ghost-button" href="#workspace">Open workspace</a></div></div>
-      <div class="hero-card" aria-label="Feature summary"><div class="mini-canvas" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><dl class="hero-stats"><div><dt>Mesh</dt><dd>10 · 12 · 14 · 18</dd></div><div><dt>Threads</dt><dd>DMC Floss · Waverly Wool</dd></div><div><dt>Exports</dt><dd>PDF print · PNG · SVG · STL</dd></div></dl></div>
+      <div class="hero-card" aria-label="Feature summary"><div class="mini-canvas" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><dl class="hero-stats"><div><dt>Mesh</dt><dd>10 · 12 · 14 · 18</dd></div><div><dt>Threads</dt><dd>DMC Floss · Waverly Wool</dd></div><div><dt>Exports</dt><dd>Clean PDF · PNG · SVG · STL</dd></div></dl></div>
     </section>
   </header>
 
@@ -28,13 +29,13 @@
       <form class="settings-grid" id="settingsForm">
         <label><span>Finished size</span><select id="sizePreset"><option value="5x7">5 × 7 in</option><option value="8x10" selected>8 × 10 in</option><option value="9x12">9 × 12 in</option><option value="11x14">11 × 14 in</option><option value="custom">Custom</option></select></label>
         <div class="two-col" id="customSizeFields" hidden><label><span>Width</span><input id="customWidth" type="number" min="1" max="24" step="0.25" value="8" /></label><label><span>Height</span><input id="customHeight" type="number" min="1" max="24" step="0.25" value="10" /></label></div>
-        <label><span>Mesh count</span><select id="meshCount"><option value="10">10 count</option><option value="12">12 count</option><option value="14" selected>14 count</option><option value="18">18 count</option></select></label>
+        <label><span>Mesh count</span><select id="meshCount"><option value="10">10 count</option><option value="12">12 count</option><option value="14">14 count</option><option value="18" selected>18 count</option></select></label>
         <label><span>Thread type</span><select id="threadType"><option value="dmc" selected>DMC Floss</option><option value="waverly">Waverly Wool</option></select></label>
         <label><span>Image fit</span><select id="fitMode"><option value="crop" selected>Crop to fill</option><option value="contain">Fit with border</option></select></label>
-        <label><span>Detail level</span><select id="detailLevel"><option value="simple">Simple — 12 colors</option><option value="balanced" selected>Balanced — 24 colors</option><option value="detailed">Detailed — 36 colors</option><option value="max">Maximum — 48 colors</option></select></label>
-        <details class="advanced-card"><summary>Advanced controls</summary><label><span>Maximum colors</span><input id="maxColors" type="range" min="4" max="64" step="1" value="24" /><output id="maxColorsOut">24</output></label><label><span>Rare color cleanup</span><input id="cleanupThreshold" type="range" min="0" max="30" step="1" value="6" /><output id="cleanupOut">6 stitches</output></label><label class="inline-toggle"><input id="ditherToggle" type="checkbox" /><span>Add subtle dithering</span></label><label><span>Custom palette CSV</span><input id="paletteUpload" type="file" accept=".csv,text/csv" /></label><p class="help-text">CSV columns: number, name, hex.</p></details>
+        <label><span>Detail level</span><select id="detailLevel"><option value="simple">Simple — 14 colors</option><option value="balanced">Balanced — 28 colors</option><option value="portrait" selected>Portrait/photo — 36 colors</option><option value="detailed">Detailed — 42 colors</option><option value="max">Maximum — 56 colors</option></select></label>
+        <details class="advanced-card"><summary>Advanced controls</summary><label><span>Maximum colors</span><input id="maxColors" type="range" min="4" max="64" step="1" value="36" /><output id="maxColorsOut">36</output></label><label><span>Rare color cleanup</span><input id="cleanupThreshold" type="range" min="0" max="30" step="1" value="6" /><output id="cleanupOut">6 stitches</output></label><label class="inline-toggle"><input id="ditherToggle" type="checkbox" /><span>Add subtle dithering</span></label><label><span>Custom palette CSV</span><input id="paletteUpload" type="file" accept=".csv,text/csv" /></label><p class="help-text">CSV columns: number, name, hex.</p></details>
       </form>
-      <section class="status-card" aria-live="polite"><h3>Pattern summary</h3><dl id="patternStats" class="stats-list"><div><dt>Size</dt><dd>8 × 10 in</dd></div><div><dt>Grid</dt><dd>112 × 140 stitches</dd></div><div><dt>Total</dt><dd>15,680 stitches</dd></div><div><dt>Colors</dt><dd>Waiting for image</dd></div></dl></section>
+      <section class="status-card" aria-live="polite"><h3>Pattern summary</h3><dl id="patternStats" class="stats-list"><div><dt>Size</dt><dd>8 × 10 in</dd></div><div><dt>Grid</dt><dd>144 × 180 stitches</dd></div><div><dt>Total</dt><dd>25,920 stitches</dd></div><div><dt>Colors</dt><dd>Waiting for image</dd></div></dl></section>
     </aside>
 
     <section class="preview-column" aria-label="Pattern preview and controls">
@@ -46,12 +47,12 @@
     <aside class="panel legend-panel" aria-label="Thread swatches and export">
       <div class="panel-heading"><p class="eyebrow">Step 3</p><h2>Threads & export</h2></div>
       <section><div class="section-title-row"><h3>Color swatches</h3><button class="small-button" id="copyLegendButton" type="button">Copy legend</button></div><div id="swatchList" class="swatch-list" aria-live="polite"><p class="muted">Thread matches will appear here after upload.</p></div></section>
-      <section id="export-panel" class="export-panel"><h3>Export targets</h3><div class="export-buttons"><button id="printPatternButton" type="button">Print / save chart PDF</button><button id="printCanvasButton" type="button">Print direct canvas guide</button><button id="downloadChartPngButton" type="button">Download chart PNG</button><button id="downloadCanvasPngButton" type="button">Download canvas print PNG</button><button id="downloadSvgButton" type="button">Download layered SVG</button><button id="downloadStlButton" type="button">Download 3D grid STL</button><button id="saveProjectButton" type="button">Save project locally</button></div><p class="help-text">For direct canvas printing, print at 100% scale and test on paper before printing on canvas.</p></section>
+      <section id="export-panel" class="export-panel"><h3>Export targets</h3><div class="export-buttons"><button id="printPatternButton" type="button">Download clean chart PDF</button><button id="printCanvasButton" type="button">Download exact canvas PDF</button><button id="downloadChartPngButton" type="button">Download chart PNG</button><button id="downloadCanvasPngButton" type="button">Download canvas print PNG</button><button id="downloadSvgButton" type="button">Download layered SVG</button><button id="downloadStlButton" type="button">Download 3D grid STL</button><button id="saveProjectButton" type="button">Save project locally</button></div><p class="help-text">Canvas exports include calibration marks. Print at 100% scale and test on paper before printing on canvas.</p></section>
     </aside>
   </main>
 
   <section class="print-area" id="printArea" aria-hidden="true"></section>
   <footer class="site-footer"><p>sdneedle.point is local-first and open-source. Images are processed in the browser and are not uploaded to a server.</p></footer>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app-v2.js"></script>
 </body>
 </html>
