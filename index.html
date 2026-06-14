@@ -7,6 +7,7 @@
   <title>sdneedle.point — needlepoint pattern studio</title>
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./fixes.css" />
+  <link rel="stylesheet" href="./stitch-guide.css" />
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to pattern workspace</a>
@@ -47,12 +48,13 @@
     <aside class="panel legend-panel" aria-label="Thread swatches and export">
       <div class="panel-heading"><p class="eyebrow">Step 3</p><h2>Threads & export</h2></div>
       <section><div class="section-title-row"><h3>Color swatches</h3><button class="small-button" id="copyLegendButton" type="button">Copy legend</button></div><div id="swatchList" class="swatch-list" aria-live="polite"><p class="muted">Thread matches will appear here after upload.</p></div></section>
+      <section class="stitch-guide-panel" id="stitch-guide-panel"><div class="section-title-row"><h3>Suggested stitch guide</h3><button class="small-button" id="generateStitchGuideButton" type="button">Generate guide</button></div><div class="guide-grid"><label><span>Stitcher level</span><select id="stitchSkill"><option value="beginner">Beginner / simple</option><option value="confident" selected>Confident beginner</option><option value="advanced">Advanced / decorative</option></select></label><label><span>Texture level</span><select id="texturePreference"><option value="low">Low texture</option><option value="balanced" selected>Balanced texture</option><option value="high">High texture</option></select></label><label><span>Manual scene notes</span><textarea id="sceneNotes" placeholder="Optional: describe important objects, e.g. martini glass, flowers, books, crab, music notes, orange tree, rocket."></textarea></label><div class="guide-button-row"><button class="primary-guide" id="downloadStitchGuideButton" type="button" disabled>Download stitch guide</button><button id="downloadFinishedRenderButton" type="button" disabled>Download finished render PNG</button></div><div id="visionStatus" class="vision-status">Upload an image, then generate a guide.</div><div id="stitchGuideOutput" class="stitch-guide-output"></div><div class="finished-render-wrap"><canvas id="finishedRenderCanvas" width="600" height="760" aria-label="Finished stitched render preview"></canvas><p class="render-caption">The render is an approximate stitched simulation for planning texture and thread direction, not a photo-real guarantee.</p></div></div></section>
       <section id="export-panel" class="export-panel"><h3>Export targets</h3><div class="export-buttons"><button id="printPatternButton" type="button">Download clean chart PDF</button><button id="printCanvasButton" type="button">Download exact canvas PDF</button><button id="downloadChartPngButton" type="button">Download chart PNG</button><button id="downloadCanvasPngButton" type="button">Download canvas print PNG</button><button id="downloadSvgButton" type="button">Download layered SVG</button><button id="downloadStlButton" type="button">Download 3D grid STL</button><button id="saveProjectButton" type="button">Save project locally</button></div><p class="help-text">Canvas exports include calibration marks. Print at 100% scale and test on paper before printing on canvas.</p></section>
     </aside>
   </main>
 
   <section class="print-area" id="printArea" aria-hidden="true"></section>
   <footer class="site-footer"><p>sdneedle.point is local-first and open-source. Images are processed in the browser and are not uploaded to a server.</p></footer>
-  <script type="module">import "./palettes-extra.js"; import "./app-v2.js";</script>
+  <script type="module">import "./palettes-extra.js"; import "./app-v2.js"; import "./stitch-guide.js";</script>
 </body>
 </html>
