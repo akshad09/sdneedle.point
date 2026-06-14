@@ -1,0 +1,78 @@
+.accent-swatch-section {
+  border-top: 1px solid var(--line);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.accent-swatch-heading {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.65rem;
+  border-radius: 14px;
+  background: rgba(197, 145, 69, 0.10);
+  border: 1px solid rgba(197, 145, 69, 0.22);
+}
+
+.accent-swatch-heading strong {
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.accent-swatch-heading span {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.38;
+}
+
+.accent-swatch-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid rgba(124, 52, 65, 0.22);
+  background: rgba(255, 255, 255, 0.58);
+  border-radius: 15px;
+  padding: 0.62rem;
+}
+
+.accent-swatch-row .accent-chip {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(38, 31, 26, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.38);
+}
+
+.accent-swatch-row strong {
+  display: block;
+  font-size: 0.86rem;
+}
+
+.accent-swatch-row small {
+  display: block;
+  color: var(--ink-soft);
+  line-height: 1.34;
+}
+
+.accent-role-pill {
+  border: 1px solid rgba(124, 52, 65, 0.28);
+  background: rgba(184, 100, 114, 0.10);
+  color: var(--rose-dark);
+  border-radius: 999px;
+  padding: 0.28rem 0.48rem;
+  font-size: 0.72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.primary-swatch-note {
+  border: 1px dashed var(--line-strong);
+  background: rgba(255,250,244,.52);
+  border-radius: 14px;
+  padding: 0.58rem 0.65rem;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
