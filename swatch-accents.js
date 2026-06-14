@@ -1,3 +1,4 @@
+import "./thread-quantities.js";
 import { getPalette } from "./palettes.js";
 
 const accentDom = {
