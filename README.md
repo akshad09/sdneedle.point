@@ -6,19 +6,13 @@ The project is intentionally built as a static site so it can run for free on Gi
 
 ## Live site
 
-Default GitHub Pages URL:
+Active GitHub Pages URL:
 
 ```txt
 https://akshad09.github.io/sdneedle.point/
 ```
 
-Target custom domain:
-
-```txt
-https://sdneedle.point/
-```
-
-The repository includes a root `CNAME` file containing `sdneedle.point`. If the site is published by GitHub Actions, the custom domain must still be saved in **Settings → Pages → Custom domain** in GitHub, and DNS records must point the domain to GitHub Pages.
+A custom domain can be added later after purchasing a valid domain name.
 
 ## Current features
 
@@ -80,7 +74,6 @@ index.html                     App shell and semantic layout
 styles.css                     Visual design, responsive layout, and print styles
 palettes.js                    Thread palette data and palette normalization
 app.js                         Pattern engine, rendering, exports, and local saves
-CNAME                          Custom domain declaration for sdneedle.point
 .github/workflows/static.yml   GitHub Pages deployment workflow
 ```
 
