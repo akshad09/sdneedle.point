@@ -4,6 +4,22 @@ A local-first web app for turning uploaded images into needlepoint patterns, pri
 
 The project is intentionally built as a static site so it can run for free on GitHub Pages and keep user images in the browser.
 
+## Live site
+
+Default GitHub Pages URL:
+
+```txt
+https://akshad09.github.io/sdneedle.point/
+```
+
+Target custom domain:
+
+```txt
+https://sdneedle.point/
+```
+
+The repository includes a root `CNAME` file containing `sdneedle.point`. If the site is published by GitHub Actions, the custom domain must still be saved in **Settings → Pages → Custom domain** in GitHub, and DNS records must point the domain to GitHub Pages.
+
 ## Current features
 
 - Upload PNG, JPG, or WebP images
@@ -60,11 +76,12 @@ Imported palettes temporarily replace the selected built-in palette in the curre
 This first release is dependency-free and deploys as static files:
 
 ```txt
-index.html        App shell and semantic layout
-styles.css        Visual design, responsive layout, and print styles
-palettes.js       Thread palette data and palette normalization
-app.js            Pattern engine, rendering, exports, and local saves
-.github/workflows/pages.yml  GitHub Pages deployment workflow
+index.html                     App shell and semantic layout
+styles.css                     Visual design, responsive layout, and print styles
+palettes.js                    Thread palette data and palette normalization
+app.js                         Pattern engine, rendering, exports, and local saves
+CNAME                          Custom domain declaration for sdneedle.point
+.github/workflows/static.yml   GitHub Pages deployment workflow
 ```
 
 A future package-based structure can split `app.js` into `pattern-core`, `thread-palettes`, `exporters`, and `ui` packages once the product behavior stabilizes.
