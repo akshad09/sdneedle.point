@@ -1,4 +1,5 @@
 import "./thread-quantities.js";
+import "./smart-guide-v2.js";
 import { getPalette } from "./palettes.js";
 
 const accentDom = {
