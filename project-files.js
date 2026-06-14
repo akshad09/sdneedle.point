@@ -1,5 +1,7 @@
 const PROJECT_SAVE_KEY = 'sdneedle.point.autosave.v2';
 
+ensureProjectFileStyles();
+
 const projectDom = {
   panelMount: document.querySelector('#export-panel'),
   saveButton: document.querySelector('#saveProjectButton'),
@@ -24,6 +26,14 @@ const projectDom = {
 };
 
 initProjectFiles();
+
+function ensureProjectFileStyles() {
+  if (document.querySelector('link[href$="project-files.css"]')) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = './project-files.css';
+  document.head.appendChild(link);
+}
 
 function initProjectFiles() {
   injectProjectPanel();
@@ -78,39 +88,15 @@ async function buildProjectPayload() {
     imageDataUrl = projectDom.sourcePreview.src;
     imageName = stored?.imageName || imageName;
   }
-  return {
-    type: 'sdneedle.point.project',
-    version: 2,
-    savedAt: new Date().toISOString(),
-    imageName,
-    imageDataUrl,
-    settings: readSettings(),
-    stitchGuide: readGuideSettings()
-  };
+  return { type: 'sdneedle.point.project', version: 2, savedAt: new Date().toISOString(), imageName, imageDataUrl, settings: readSettings(), stitchGuide: readGuideSettings() };
 }
 
 function readSettings() {
-  return {
-    sizePreset: value(projectDom.sizePreset, '8x10'),
-    width: Number(value(projectDom.customWidth, 8)),
-    height: Number(value(projectDom.customHeight, 10)),
-    mesh: Number(value(projectDom.mesh, 18)),
-    threadType: value(projectDom.primary, 'essentials'),
-    accentThreadTypes: selectedValues(projectDom.accents),
-    fitMode: value(projectDom.fit, 'crop'),
-    detailLevel: value(projectDom.detail, 'portrait'),
-    maxColors: Number(value(projectDom.maxColors, 36)),
-    cleanupThreshold: Number(value(projectDom.cleanup, 6)),
-    dither: Boolean(projectDom.dither?.checked)
-  };
+  return { sizePreset: value(projectDom.sizePreset, '8x10'), width: Number(value(projectDom.customWidth, 8)), height: Number(value(projectDom.customHeight, 10)), mesh: Number(value(projectDom.mesh, 18)), threadType: value(projectDom.primary, 'essentials'), accentThreadTypes: selectedValues(projectDom.accents), fitMode: value(projectDom.fit, 'crop'), detailLevel: value(projectDom.detail, 'portrait'), maxColors: Number(value(projectDom.maxColors, 36)), cleanupThreshold: Number(value(projectDom.cleanup, 6)), dither: Boolean(projectDom.dither?.checked) };
 }
 
 function readGuideSettings() {
-  return {
-    skill: value(projectDom.skill, 'confident'),
-    texture: value(projectDom.texture, 'balanced'),
-    notes: projectDom.notes?.value || ''
-  };
+  return { skill: value(projectDom.skill, 'confident'), texture: value(projectDom.texture, 'balanced'), notes: projectDom.notes?.value || '' };
 }
 
 async function importProjectFile(event) {
@@ -122,18 +108,9 @@ async function importProjectFile(event) {
     if (!payload?.imageDataUrl || !payload?.settings) throw new Error('Invalid project file.');
     applySettings(payload.settings);
     applyGuideSettings(payload.stitchGuide || {});
-    localStorage.setItem(PROJECT_SAVE_KEY, JSON.stringify({
-      settings: payload.settings,
-      imageDataUrl: payload.imageDataUrl,
-      imageName: payload.imageName || file.name.replace(/\.sdneedle\.json$|\.json$/i, ''),
-      savedAt: payload.savedAt || new Date().toISOString()
-    }));
+    localStorage.setItem(PROJECT_SAVE_KEY, JSON.stringify({ settings: payload.settings, imageDataUrl: payload.imageDataUrl, imageName: payload.imageName || file.name.replace(/\.sdneedle\.json$|\.json$/i, ''), savedAt: payload.savedAt || new Date().toISOString() }));
     projectDom.loadButton?.click();
-    window.setTimeout(() => {
-      applySettings(payload.settings);
-      applyGuideSettings(payload.stitchGuide || {});
-      projectDom.generateGuide?.click();
-    }, 1200);
+    window.setTimeout(() => { applySettings(payload.settings); applyGuideSettings(payload.stitchGuide || {}); projectDom.generateGuide?.click(); }, 1200);
     setProjectStatus('Project file opened. Image, layout, mesh, thread choices, and notes are being restored.');
   } catch (error) {
     console.error(error);
@@ -165,23 +142,11 @@ function applyGuideSettings(settings) {
 }
 
 function dispatchAll() {
-  [projectDom.sizePreset, projectDom.customWidth, projectDom.customHeight, projectDom.mesh, projectDom.primary, projectDom.accents, projectDom.fit, projectDom.detail, projectDom.maxColors, projectDom.cleanup, projectDom.dither].forEach((el) => {
-    if (!el) return;
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-    el.dispatchEvent(new Event('change', { bubbles: true }));
-  });
+  [projectDom.sizePreset, projectDom.customWidth, projectDom.customHeight, projectDom.mesh, projectDom.primary, projectDom.accents, projectDom.fit, projectDom.detail, projectDom.maxColors, projectDom.cleanup, projectDom.dither].forEach((el) => { if (!el) return; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); });
 }
 
-function selectedValues(select) {
-  return [...(select?.selectedOptions || [])].map((option) => option.value);
-}
-
-function setMultiValue(select, values) {
-  if (!select) return;
-  const set = new Set(values || []);
-  [...select.options].forEach((option) => { option.selected = set.has(option.value); });
-}
-
+function selectedValues(select) { return [...(select?.selectedOptions || [])].map((option) => option.value); }
+function setMultiValue(select, values) { if (!select) return; const set = new Set(values || []); [...select.options].forEach((option) => { option.selected = set.has(option.value); }); }
 function value(el, fallback) { return el?.value ?? fallback; }
 function setValue(el, val) { if (el) el.value = String(val); }
 function safeParse(text) { try { return text ? JSON.parse(text) : null; } catch { return null; } }
