@@ -1,0 +1,132 @@
+.stitch-guide-panel {
+  margin-top: 1.2rem;
+  padding: 0.95rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 244, 0.66);
+  border-radius: var(--radius-md);
+}
+
+.stitch-guide-panel h3 {
+  margin-bottom: 0.75rem;
+}
+
+.guide-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.guide-grid label {
+  min-width: 0;
+}
+
+.guide-grid textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  border: 1px solid var(--line-strong);
+  border-radius: 13px;
+  padding: 0.72rem 0.78rem;
+  color: var(--ink);
+  background: rgba(255,255,255,0.72);
+  font: inherit;
+  line-height: 1.42;
+}
+
+.guide-button-row {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.guide-button-row button {
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 0.78rem 0.9rem;
+  width: 100%;
+  background: rgba(255,250,244,.72);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.guide-button-row button.primary-guide {
+  background: var(--rose-dark);
+  color: #fff;
+  border-color: var(--rose-dark);
+}
+
+.guide-button-row button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.vision-status {
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  padding: 0.72rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  background: rgba(255,255,255,.4);
+}
+
+.stitch-guide-output {
+  display: grid;
+  gap: 0.68rem;
+  margin-top: 0.75rem;
+}
+
+.guide-card {
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: rgba(255,255,255,0.62);
+  padding: 0.74rem;
+}
+
+.guide-card strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+}
+
+.guide-card span {
+  color: var(--ink-soft);
+  line-height: 1.45;
+  font-size: 0.88rem;
+}
+
+.detected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.detected-pill {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 0.28rem 0.52rem;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.finished-render-wrap {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+#finishedRenderCanvas {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fffaf4;
+  box-shadow: 0 10px 34px rgba(82, 50, 30, 0.12);
+}
+
+.render-caption {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
