@@ -6,23 +6,31 @@ const mixDom = {
   chartPdfButton: document.querySelector("#printPatternButton"),
   sourcePreview: document.querySelector("#sourcePreview"),
   chartCanvas: document.querySelector("#patternCanvas"),
-  swatches: document.querySelector("#swatchList"),
-  renderCanvas: document.querySelector("#finishedRenderCanvas"),
-  status: document.querySelector("#visionStatus")
+  renderCanvas: document.querySelector("#finishedRenderCanvas")
 };
 
 initThreadMixExport();
 
 function initThreadMixExport() {
-  if (!mixDom.primary || !mixDom.accents) return;
+  if (!mixDom.primary || !mixDom.accents || !mixDom.guideOutput) return;
+
   mixDom.primary.addEventListener("change", updateThreadPlanCard);
   mixDom.accents.addEventListener("change", updateThreadPlanCard);
-  if (mixDom.guideOutput) {
-    new MutationObserver(updateThreadPlanCard).observe(mixDom.guideOutput, { childList: true, subtree: true });
-  }
+  mixDom.guideButton?.addEventListener("click", () => waitForGuideThenUpdate());
+
   if (mixDom.chartPdfButton) {
     mixDom.chartPdfButton.textContent = "Download chart + stitch guide PDF";
     mixDom.chartPdfButton.addEventListener("click", handleProjectPdfClick, true);
+  }
+
+  updateThreadPlanCard();
+}
+
+async function waitForGuideThenUpdate() {
+  const start = Date.now();
+  while (Date.now() - start < 9000) {
+    await wait(300);
+    if (document.querySelector("#stitchGuideOutput .guide-card:not(#textureThreadPlanCard)")) break;
   }
   updateThreadPlanCard();
 }
@@ -30,38 +38,55 @@ function initThreadMixExport() {
 async function handleProjectPdfClick(event) {
   event.preventDefault();
   event.stopImmediatePropagation();
+
   if (!mixDom.chartCanvas || !mixDom.chartCanvas.width) {
     toastProject("Upload an image first.");
     return;
   }
+
   await ensureGuideExists();
+  updateThreadPlanCard();
   toastProject("Building chart + stitch guide PDF...");
-  const pages = [drawProjectCoverPage(), drawChartPage(), ...drawLegendPages(), ...drawGuidePages(), drawFinishedRenderPage()].filter(Boolean);
-  const pdf = await buildPdf(pages.map((canvas) => ({ canvas, pageWidthPt: 612, pageHeightPt: 792, marginPt: 0 })));
+
+  const pages = [
+    drawProjectCoverPage(),
+    drawChartPage(),
+    ...drawLegendPages(),
+    ...drawGuidePages(),
+    drawFinishedRenderPage()
+  ].filter(Boolean);
+
+  const pdf = await buildPdf(pages.map((canvas) => ({ canvas, pageWidthPt: 612, pageHeightPt: 792 })));
   downloadBlob(pdf, "sdneedle-chart-stitch-guide.pdf");
 }
 
 async function ensureGuideExists() {
-  if (document.querySelector("#stitchGuideOutput .guide-card")) return;
+  if (document.querySelector("#stitchGuideOutput .guide-card:not(#textureThreadPlanCard)")) return;
   if (!mixDom.sourcePreview || mixDom.sourcePreview.hidden || !mixDom.sourcePreview.src) return;
   mixDom.guideButton?.click();
   const start = Date.now();
-  while (Date.now() - start < 7500) {
-    await wait(250);
-    if (document.querySelector("#stitchGuideOutput .guide-card")) return;
+  while (Date.now() - start < 9000) {
+    await wait(300);
+    if (document.querySelector("#stitchGuideOutput .guide-card:not(#textureThreadPlanCard)")) return;
   }
 }
 
 function updateThreadPlanCard() {
-  if (!mixDom.guideOutput) return;
-  const existing = document.querySelector("#textureThreadPlanCard");
-  if (existing) existing.remove();
   const primary = getSelectedOptionLabel(mixDom.primary);
   const accents = getSelectedOptions(mixDom.accents);
+  const signature = JSON.stringify({ primary, accents: accents.map((item) => item.value) });
+  const existing = document.querySelector("#textureThreadPlanCard");
+  if (existing?.dataset.signature === signature) return;
+  existing?.remove();
+
   const card = document.createElement("article");
   card.id = "textureThreadPlanCard";
   card.className = "guide-card texture-plan-card";
-  const accentText = accents.length ? accents.map((item) => `<span>• ${escapeHtml(item.label)} — ${escapeHtml(textureUse(item.value))}</span>`).join("") : `<span>• No accent threads selected yet. Add metallics, velvet, silk, or ribbon-style threads for texture-specific areas.</span>`;
+  card.dataset.signature = signature;
+  const accentText = accents.length
+    ? accents.map((item) => `<span>• ${escapeHtml(item.label)} — ${escapeHtml(textureUse(item.value))}</span>`).join("")
+    : `<span>• No accent threads selected yet. Add metallics, velvet, silk, or ribbon-style threads for texture-specific areas.</span>`;
+
   card.innerHTML = `<strong>Thread mix / texture plan</strong><span>Primary coverage thread: ${escapeHtml(primary)}. Use it for the main color chart and broad stitching. Add selected accent threads only where their texture helps the subject.</span><div class="texture-plan-list">${accentText}</div>`;
   mixDom.guideOutput.appendChild(card);
 }
@@ -105,10 +130,10 @@ function drawProjectCoverPage() {
   drawPageBase(ctx, canvas, "sdneedle.point", "Needlepoint chart + stitch guide");
   const primary = getSelectedOptionLabel(mixDom.primary);
   const accents = getSelectedOptions(mixDom.accents).map((item) => item.label);
-  drawWrapped(ctx, "This PDF combines the generated needlepoint chart, color legend, stitch recommendations, thread mix plan, and finished stitched render preview.", 72, 210, 1500, 38, "30px Arial");
+  drawWrapped(ctx, "This PDF combines the generated chart, color legend, stitch recommendations, thread mix plan, and finished stitched render preview.", 72, 210, 1500, 38, "30px Arial");
   drawWrapped(ctx, `Primary thread: ${primary}`, 72, 340, 1500, 34, "28px Arial");
   drawWrapped(ctx, `Accent / texture threads: ${accents.length ? accents.join(", ") : "none selected"}`, 72, 395, 1500, 34, "28px Arial");
-  drawWrapped(ctx, "Use the primary thread for the main color chart. Use accent threads selectively for texture: metallics for shine, velvet for plush/fur/snow, silk for sheen/detail, and wool/silk blends for coverage and tactile areas.", 72, 500, 1500, 36, "28px Arial");
+  drawWrapped(ctx, "Use the primary thread for the chart. Use accent threads selectively for texture: metallics for shine, velvet for plush/fur/snow, silk for sheen/detail, and wool/silk blends for tactile coverage.", 72, 500, 1500, 36, "28px Arial");
   return canvas;
 }
 
@@ -130,6 +155,7 @@ function drawLegendPages() {
     symbol: row.querySelector(".symbol-pill")?.textContent?.trim() || ""
   }));
   if (!rows.length) return [];
+
   const pages = [];
   const perPage = 34;
   for (let start = 0; start < rows.length; start += perPage) {
@@ -162,11 +188,13 @@ function drawGuidePages() {
     body: card.textContent.replace(card.querySelector("strong")?.textContent || "", "").trim().replace(/\s+/g, " ")
   }));
   if (!cards.length) cards.push({ title: "Suggested stitch guide", body: "Generate a guide in the website before exporting to include object-specific stitch recommendations." });
+
   const pages = [];
   let canvas = pageCanvas();
   let ctx = canvas.getContext("2d");
   drawPageBase(ctx, canvas, "Suggested stitch guide", "Object-aware recommendations and texture plan");
   let y = 210;
+
   for (const card of cards) {
     const needed = estimateTextHeight(`${card.title}. ${card.body}`, 1350, 29) + 85;
     if (y + needed > 2070) {
