@@ -1,0 +1,51 @@
+.project-file-panel {
+  margin-top: 1.2rem;
+  padding: 0.95rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 244, 0.66);
+  border-radius: var(--radius-md);
+}
+
+.project-file-panel h3 {
+  margin-bottom: 0.45rem;
+}
+
+.project-file-actions {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.project-file-actions button,
+.project-import-label {
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 0.78rem 0.9rem;
+  width: 100%;
+  background: rgba(255,250,244,.82);
+  color: var(--ink);
+  font-weight: 850;
+  text-align: center;
+  cursor: pointer;
+}
+
+.project-file-actions button.primary-project {
+  background: var(--rose-dark);
+  color: #fff;
+  border-color: var(--rose-dark);
+}
+
+.project-import-label input {
+  display: none;
+}
+
+.project-file-status {
+  margin-top: 0.55rem;
+  border: 1px dashed var(--line-strong);
+  background: rgba(255,255,255,.44);
+  border-radius: 14px;
+  padding: 0.65rem;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.42;
+}
